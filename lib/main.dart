@@ -64,7 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
     //   _counter++;
     // });
     TestRequest request = TestRequest();
-    request.addParams("qwew", 222).addParams("ee", 44);
+    request
+        .addParams("qwew", 222)
+        .addParams("ee", 44)
+        .addParams("requestPrams", "v");
     try {
       var result = NetManager.getInstance().fire(request);
       print(result);

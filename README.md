@@ -1,6 +1,6 @@
 # flutter_bili_app
 
-A new Flutter project.
+基于 Flutter 实现仿哔哩哔哩APP
 
 ## Getting Started
 
