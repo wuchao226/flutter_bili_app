@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bili_app/http/core/net_error.dart';
+import 'package:flutter_bili_app/util/logger_util.dart';
 
 import 'http/core/net_manager.dart';
 import 'http/request/test_request.dart';
@@ -68,9 +69,10 @@ class _MyHomePageState extends State<MyHomePage> {
         .addParams("qwew", 222)
         .addParams("ee", 44)
         .addParams("requestPrams", "v");
+    request.addHeaders("k", "v");
     try {
       var result = NetManager.getInstance().fire(request);
-      print(result);
+      LoggerUtil.i("main-----${result}");
     } on NeedAuth catch (e) {
       print(e);
     } on NeedLogin catch (e) {

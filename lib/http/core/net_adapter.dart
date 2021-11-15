@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:flutter_bili_app/http/request/base_request.dart';
+import 'package:flutter_bili_app/http/request/base_net_request.dart';
 
 /// 网络请求抽象类
 abstract class NetAdapter {
-  Future<NetResponse<T>> send<T>(BaseRequest request);
+  Future<NetResponse<T>> send<T>(BaseNetRequest request);
 }
 
 /// 统一网络层返回格式
@@ -20,7 +20,7 @@ class NetResponse<T> {
   T data;
 
   /// The corresponding request info.
-  BaseRequest request;
+  BaseNetRequest request;
 
   /// Http status code.
   int statusCode;

@@ -1,29 +1,32 @@
-import 'package:dio/dio.dart';
-import 'package:flutter_bili_app/http/core/net_adapter.dart';
-import 'package:flutter_bili_app/http/core/net_error.dart';
-import 'package:flutter_bili_app/http/request/base_net_request.dart';
+import 'dart:io';
 
-/// Dio适配器
-class DioAdapter extends NetAdapter {
+import 'package:flutter_bili_app/http/core/net_adapter.dart';
+import 'package:flutter_bili_app/http/request/base_net_request.dart';
+import 'package:flutter_bili_app/util/logger_util.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+
+import 'net_error.dart';
+
+/// http 适配器
+class HttpAdapter extends NetAdapter {
   @override
   Future<NetResponse<T>> send<T>(BaseNetRequest request) async {
-    Response response;
-    // Http请求的配置信息
-    var options = Options(headers: request.header);
-    DioError error;
+    http.Response response;
+    Map<String, String> headers = Map<String, String>.from(request.header);
+    var error;
     try {
       if (request.httpMethod() == HttpMethod.GET) {
-        response = await Dio().get(request.url(), options: options);
+        response = await http.get(request.uri(), headers: headers);
       } else if (request.httpMethod() == HttpMethod.POST) {
-        response = await Dio()
-            .post(request.url(), data: request.params, options: options);
+        response = await http.post(request.uri(),
+            headers: headers, body: request.params);
       } else if (request.httpMethod() == HttpMethod.DELETE) {
-        response = await Dio()
-            .delete(request.url(), data: request.params, options: options);
+        response = await http.delete(request.uri(),
+            headers: headers, body: request.params);
       }
-    } on DioError catch (e) {
+    } catch (e) {
       error = e;
-      response = e.response;
     }
     if (error != null) {
       /// 抛出 NetError
@@ -36,10 +39,10 @@ class DioAdapter extends NetAdapter {
   /// 构建 NetResponse
   NetResponse buildRes(Response response, BaseNetRequest request) {
     return NetResponse(
-        data: response.data,
+        data: response.body,
         request: request,
         statusCode: response.statusCode,
-        statusMessage: response.statusMessage,
+        statusMessage: response.reasonPhrase,
         extra: response);
   }
 }

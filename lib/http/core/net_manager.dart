@@ -1,7 +1,8 @@
+import 'package:flutter_bili_app/http/core/http_adapter.dart';
 import 'package:flutter_bili_app/http/core/mock_adapter.dart';
 import 'package:flutter_bili_app/http/core/net_adapter.dart';
 import 'package:flutter_bili_app/http/core/net_error.dart';
-import 'package:flutter_bili_app/http/request/base_request.dart';
+import 'package:flutter_bili_app/http/request/base_net_request.dart';
 import 'package:flutter_bili_app/util/logger_util.dart';
 
 import 'dio_adapter.dart';
@@ -20,7 +21,7 @@ class NetManager {
     return _instance;
   }
 
-  Future fire(BaseRequest request) async {
+  Future fire(BaseNetRequest request) async {
     NetResponse response;
     var error;
     try {
@@ -38,9 +39,10 @@ class NetManager {
       printLog(error);
     }
     var result = response.data;
-    printLog(result);
+    printLog("result:$result");
     var statusCode = response.statusCode;
-    var netError;
+    printLog("statusCode:$statusCode");
+    NetError netError;
     switch (statusCode) {
       case 200:
         return result;
@@ -58,12 +60,14 @@ class NetManager {
     throw netError;
   }
 
-  Future<dynamic> send<T>(BaseRequest request) async {
+  Future<dynamic> send<T>(BaseNetRequest request) async {
     printLog('url:${request.url()}');
     // 使用 mock 发送请求
     // NetAdapter adapter = MockAdapter();
     // 使用 dio 发送请求
-    NetAdapter adapter = DioAdapter();
+    // NetAdapter adapter = DioAdapter();
+    // 使用 http 发送请求
+    NetAdapter adapter = HttpAdapter();
     return adapter.send(request);
   }
 
