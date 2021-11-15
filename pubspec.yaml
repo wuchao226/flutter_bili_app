@@ -40,6 +40,8 @@ dependencies:
   dio: ^4.0.1
   # 网络访问库
   http: ^0.13.4
+  # 本地存储
+  shared_preferences: ^2.0.8
 
 dev_dependencies:
   flutter_test:

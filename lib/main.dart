@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bili_app/db/share_prefs_cache.dart';
 import 'package:flutter_bili_app/http/core/net_error.dart';
 import 'package:flutter_bili_app/util/logger_util.dart';
 
@@ -55,6 +56,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    SharePrefsCahce.preInit();
+  }
+
   void _incrementCounter() {
     // setState(() {
     //   // This call to setState tells the Flutter framework that something has
@@ -64,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //   // called again, and so nothing would appear to happen.
     //   _counter++;
     // });
-    TestRequest request = TestRequest();
+    /*TestRequest request = TestRequest();
     request
         .addParams("qwew", 222)
         .addParams("ee", 44)
@@ -79,7 +86,11 @@ class _MyHomePageState extends State<MyHomePage> {
       print(e);
     } on NetError catch (e) {
       print(e);
-    }
+    }*/
+
+    SharePrefsCahce.getInstance().setString("aaa", "value");
+    var val = SharePrefsCahce.getInstance().get("aaa");
+    LoggerUtil.d(val);
   }
 
   @override
