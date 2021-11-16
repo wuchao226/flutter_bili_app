@@ -1,3 +1,5 @@
+import 'package:flutter_bili_app/http/dao/login_dao.dart';
+import 'package:flutter_bili_app/util/constants.dart';
 import 'package:flutter_bili_app/util/logger_util.dart';
 
 enum HttpMethod { GET, POST, DELETE }
@@ -7,24 +9,24 @@ abstract class BaseNetRequest {
   // curl -X GET "http://api.devio.org/uapi/test/test?requestPrams=11" -H "accept: */*"
   // curl -X GET "https://api.devio.org/uapi/test/test/1
 
-  // 支持查询参数也支持path参数
+  /// 支持查询参数也支持path参数
   var pathParmas;
 
-  // 是否使用https协议(开发环境http请求，生产环境https请求)
+  /// 是否使用https协议(开发环境http请求，生产环境https请求)
   var useHttps = true;
 
-  // 设置域名
+  /// 设置域名
   String authority() {
     return "api.devio.org";
   }
 
-  // 设置请求方法
+  /// 设置请求方法
   HttpMethod httpMethod();
 
-  // 设置 path (如：uapi/test/test)
+  /// 设置 path (如：uapi/test/test)
   String path();
 
-  // 生成具体 url
+  /// 生成具体 url
   String url() {
     Uri uri;
     var pathStr = path();
@@ -46,7 +48,7 @@ abstract class BaseNetRequest {
     return uri.toString();
   }
 
-  // 生成具体 uri
+  /// 生成具体 uri
   Uri uri() {
     Uri uri;
     var pathStr = path();
@@ -64,14 +66,18 @@ abstract class BaseNetRequest {
     } else {
       uri = Uri.http(authority(), pathStr, params);
     }
+    if (needLogin()) {
+      // 给需要登录的接口携带登录令牌
+      addHeaders(LoginDao.BOARDING_PASS, LoginDao.getBoardingPass());
+    }
     // LoggerUtil.i('url:${uri.toString()}');
     return uri;
   }
 
-  // 是否需要登录
+  /// 是否需要登录
   bool needLogin();
 
-  // 存储参数
+  /// 存储请求参数
   Map<String, String> params = {};
 
   /// 添加参数
@@ -80,7 +86,11 @@ abstract class BaseNetRequest {
     return this;
   }
 
-  Map<String, dynamic> header = {};
+  /// 存储请求 header
+  Map<String, dynamic> header = {
+    Constants.authTokenK: Constants.authTokenV,
+    Constants.courseFlagK: Constants.courseFlagV
+  };
 
   ///添加header
   BaseNetRequest addHeaders(String k, Object v) {

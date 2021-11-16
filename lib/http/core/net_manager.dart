@@ -42,25 +42,28 @@ class NetManager {
     printLog("result:$result");
     var statusCode = response.statusCode;
     printLog("statusCode:$statusCode");
-    NetError netError;
+    // NetError netError;
     switch (statusCode) {
       case 200:
         return result;
         break;
       case 401:
-        netError = NeedLogin();
+        // netError = NeedLogin();
+        throw NeedLogin();
         break;
       case 403:
-        netError = NeedAuth(result.toString(), data: result);
+        // netError = NeedAuth(result.toString(), data: result);
+        throw NeedAuth(result.toString(), data: result);
         break;
       default:
-        netError = NetError(statusCode, result.toString(), data: result);
+        // netError = NetError(statusCode, result.toString(), data: result);
+        throw NetError(statusCode, result.toString(), data: result);
         break;
     }
-    throw netError;
+    // throw netError;
   }
 
-  Future<dynamic> send<T>(BaseNetRequest request) async {
+  Future<NetResponse<T>> send<T>(BaseNetRequest request) async {
     printLog('url:${request.url()}');
     // 使用 mock 发送请求
     // NetAdapter adapter = MockAdapter();
