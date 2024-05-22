@@ -44,7 +44,7 @@ abstract class BaseNetRequest {
     } else {
       uri = Uri.http(authority(), pathStr, params);
     }
-    // LoggerUtil.i('url:${uri.toString()}');
+    LoggerUtil.i('BaseNetRequest url():${uri.toString()}');
     return uri.toString();
   }
 
@@ -70,12 +70,12 @@ abstract class BaseNetRequest {
       // 给需要登录的接口携带登录令牌
       addHeaders(LoginDao.BOARDING_PASS, LoginDao.getBoardingPass());
     }
-    // LoggerUtil.i('url:${uri.toString()}');
+    LoggerUtil.i('BaseNetRequest uri():${uri.toString()}');
     return uri;
   }
 
   /// 是否需要登录
-  bool needLogin();
+  bool needLogin() => false;
 
   /// 存储请求参数
   Map<String, String> params = {};

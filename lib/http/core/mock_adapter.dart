@@ -5,9 +5,11 @@ import 'package:flutter_bili_app/http/request/base_net_request.dart';
 class MockAdapter extends NetAdapter {
   @override
   Future<NetResponse<T>> send<T>(BaseNetRequest request) {
-    return Future<NetResponse>.delayed(const Duration(milliseconds: 1000), () {
+    return Future<NetResponse<T>>.delayed(const Duration(milliseconds: 1000), () {
       return NetResponse(
-          data: {"code": 0, "message": 'success'}, statusCode: 402);
+        data: {"code": 0, "message": 'success'} as T,
+        statusCode: 402,
+      );
     });
   }
 }

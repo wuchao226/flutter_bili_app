@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=3.3.4 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -33,15 +33,15 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.6
   # logger 日志打印库
-  logger: ^1.1.0
+  logger: ^2.3.0
   # 一个强大的 Dart Http 请求库，支持Restful API、FormData、拦截器、请求取消、Cookie管理、文件上传/下载、超时、自定义适配器等.
-  dio: ^4.0.1
+  dio: ^5.4.3+1
   # 网络访问库
-  http: ^0.13.4
+  http: ^1.2.1
   # 本地存储
-  shared_preferences: ^2.0.8
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -52,7 +52,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -9,18 +9,19 @@ abstract class NetAdapter {
 
 /// 统一网络层返回格式
 class NetResponse<T> {
-  NetResponse(
-      {this.data,
-      this.request,
-      this.statusCode,
-      this.statusMessage,
-      this.extra});
+  NetResponse({
+    required this.data,
+    this.request,
+    required this.statusCode,
+    this.statusMessage = "",
+    this.extra,
+  });
 
   /// Response body. may have been transformed, please refer to [ResponseType].
-  T data;
+  T? data;
 
   /// The corresponding request info.
-  BaseNetRequest request;
+  BaseNetRequest? request;
 
   /// Http status code.
   int statusCode;

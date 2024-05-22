@@ -1,11 +1,8 @@
 import 'package:flutter_bili_app/http/core/http_adapter.dart';
-import 'package:flutter_bili_app/http/core/mock_adapter.dart';
 import 'package:flutter_bili_app/http/core/net_adapter.dart';
 import 'package:flutter_bili_app/http/core/net_error.dart';
 import 'package:flutter_bili_app/http/request/base_net_request.dart';
 import 'package:flutter_bili_app/util/logger_util.dart';
-
-import 'dio_adapter.dart';
 
 /// 1.支持网络库插拔设计，且不干扰业务层
 /// 2.基于配置请求请求，简洁易用
@@ -14,15 +11,15 @@ import 'dio_adapter.dart';
 class NetManager {
   NetManager._();
 
-  static NetManager _instance;
+  static NetManager? _instance;
 
   static NetManager getInstance() {
     _instance ??= NetManager._();
-    return _instance;
+    return _instance!;
   }
 
   Future fire(BaseNetRequest request) async {
-    NetResponse response;
+    NetResponse? response;
     var error;
     try {
       response = await send(request);
@@ -38,9 +35,9 @@ class NetManager {
     if (response == null) {
       printLog(error);
     }
-    var result = response.data;
+    var result = response?.data;
     printLog("result:$result");
-    var statusCode = response.statusCode;
+    var statusCode = response?.statusCode ?? -1;
     printLog("statusCode:$statusCode");
     // NetError netError;
     switch (statusCode) {

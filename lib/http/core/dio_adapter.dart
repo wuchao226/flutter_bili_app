@@ -7,39 +7,37 @@ import 'package:flutter_bili_app/http/request/base_net_request.dart';
 class DioAdapter extends NetAdapter {
   @override
   Future<NetResponse<T>> send<T>(BaseNetRequest request) async {
-    Response response;
+    Response? response;
     // Http请求的配置信息
     var options = Options(headers: request.header);
-    DioError error;
+    DioException? error;
     try {
       if (request.httpMethod() == HttpMethod.GET) {
         response = await Dio().get(request.url(), options: options);
       } else if (request.httpMethod() == HttpMethod.POST) {
-        response = await Dio()
-            .post(request.url(), data: request.params, options: options);
+        response = await Dio().post(request.url(), data: request.params, options: options);
       } else if (request.httpMethod() == HttpMethod.DELETE) {
-        response = await Dio()
-            .delete(request.url(), data: request.params, options: options);
+        response = await Dio().delete(request.url(), data: request.params, options: options);
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       error = e;
       response = e.response;
     }
     if (error != null) {
       /// 抛出 NetError
-      throw NetError(response?.statusCode ?? -1, error.toString(),
-          data: buildRes(response, request));
+      throw NetError(response?.statusCode ?? -1, error.toString(), data: buildRes(response, request));
     }
     return buildRes(response, request);
   }
 
   /// 构建 NetResponse
-  NetResponse buildRes(Response response, BaseNetRequest request) {
+  NetResponse<T> buildRes<T>(Response? response, BaseNetRequest request) {
     return NetResponse(
-        data: response.data,
-        request: request,
-        statusCode: response.statusCode,
-        statusMessage: response.statusMessage,
-        extra: response);
+      data: response?.data as T,
+      request: request,
+      statusCode: response?.statusCode ?? -1,
+      statusMessage: response?.statusMessage ?? "",
+      extra: response,
+    );
   }
 }

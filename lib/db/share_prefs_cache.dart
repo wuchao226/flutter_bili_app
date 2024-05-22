@@ -1,58 +1,64 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 ///缓存管理类
-class SharePrefsCahce {
-  SharedPreferences prefs;
+class SharePrefsCache {
+  SharedPreferences? _prefs;
 
-  SharePrefsCahce._() {
+  // 私有的命名构造函数
+  SharePrefsCache._internal() {
     init();
   }
 
-  static SharePrefsCahce _instance;
+  static SharePrefsCache? _instance;
 
-  static SharePrefsCahce getInstance() {
-    _instance ?? SharePrefsCahce._();
-    return _instance;
+  static SharePrefsCache getInstance() {
+    _instance ?? SharePrefsCache._internal();
+    return _instance!;
   }
 
   void init() async {
-    prefs ??= await SharedPreferences.getInstance();
+    _prefs ??= await SharedPreferences.getInstance();
   }
 
-  SharePrefsCahce._pre(SharedPreferences prefs) {
-    this.prefs = prefs;
+  SharePrefsCache._pre(SharedPreferences prefs) {
+    _prefs = prefs;
   }
 
-  /// 预初始化，防止在使用 get 时，prefs 还未完成初始化
-  static Future<SharePrefsCahce> preInit() async {
+  /// 预初始化，防止在使用 get 时，_prefs 还未完成初始化
+  static Future<SharePrefsCache> preInit() async {
     if (_instance == null) {
       var prefs = await SharedPreferences.getInstance();
-      _instance = SharePrefsCahce._pre(prefs);
+      _instance = SharePrefsCache._pre(prefs);
     }
-    return _instance;
+    return _instance!;
   }
 
   setString(String key, String value) {
-    prefs.setString(key, value);
+    _prefs?.setString(key, value);
   }
 
   setDouble(String key, double value) {
-    prefs.setDouble(key, value);
+    _prefs?.setDouble(key, value);
   }
 
   setInt(String key, int value) {
-    prefs.setInt(key, value);
+    _prefs?.setInt(key, value);
   }
 
   setBool(String key, bool value) {
-    prefs.setBool(key, value);
+    _prefs?.setBool(key, value);
   }
 
   setStringList(String key, List<String> value) {
-    prefs.setStringList(key, value);
+    _prefs?.setStringList(key, value);
   }
 
-  T get<T>(String key) {
-    return prefs.get(key);
+  remove(String key) {
+    _prefs?.remove(key);
+  }
+
+  T? get<T>(String key) {
+    var value = _prefs?.get(key);
+    return value != null ? (value as T) : null;
   }
 }

@@ -16,8 +16,7 @@ class LoginDao {
   }
 
   /// 注册
-  static register(String userName, String password, String imoocId,
-      String orderId) {
+  static register(String userName, String password, String imoocId, String orderId) {
     return _send(userName, password, imoocId: imoocId, orderId: orderId);
   }
 
@@ -38,7 +37,7 @@ class LoginDao {
       LoggerUtil.i("LoginDao_res:$res");
       if (res['code'] == 0 && res['data'] != null) {
         //保存登录令牌
-        SharePrefsCahce.getInstance().setString(BOARDING_PASS, res['data']);
+        SharePrefsCache.getInstance().setString(BOARDING_PASS, res['data']);
       }
     });
     LoggerUtil.i("LoginDao:$result");
@@ -51,6 +50,6 @@ class LoginDao {
 
   /// 获取登录令牌
   static getBoardingPass() {
-    return SharePrefsCahce.getInstance().get(BOARDING_PASS);
+    return SharePrefsCache.getInstance().get(BOARDING_PASS);
   }
 }
