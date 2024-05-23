@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_bili_app/http/core/http_adapter.dart';
 import 'package:flutter_bili_app/http/core/net_adapter.dart';
 import 'package:flutter_bili_app/http/core/net_error.dart';
@@ -35,8 +37,8 @@ class NetManager {
     if (response == null) {
       printLog(error);
     }
-    var result = response?.data;
-    printLog("result:$result");
+    String result = response?.data;
+    printLog(json.decode(result));
     var statusCode = response?.statusCode ?? -1;
     printLog("statusCode:$statusCode");
     // NetError netError;
@@ -72,6 +74,6 @@ class NetManager {
   }
 
   void printLog(log) {
-    LoggerUtil.i('net_manager:$log');
+    LoggerUtil.i(log);
   }
 }
